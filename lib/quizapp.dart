@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_app/frontpage.dart';
 import 'package:quiz_app/questions_screen.dart';
+import 'package:quiz_app/results_screen.dart';
 
 // Quiz class
 class Quiz extends StatefulWidget {
@@ -15,6 +16,7 @@ class Quiz extends StatefulWidget {
 // State class
 class _QuizState extends State<Quiz> {
   String page = "FrontPage";
+  final List<String> answers = [];
 
   void startQuiz() {
     setState(() {
@@ -22,11 +24,27 @@ class _QuizState extends State<Quiz> {
     });
   }
 
+  void endQuiz() {
+    setState(() {
+      page = "EndPage";
+    });
+  }
+
+  void retryQuiz() {
+    setState(() {
+      page = "FrontPage";
+      answers.clear();
+    });
+  }
+
   @override
   Widget build(context) {
     Widget page = FrontPage(startQuiz: startQuiz);
     if (this.page == "Questions") {
-      page = const QuestionsScreen();
+      page = QuestionsScreen(endQuiz: endQuiz, answers: answers);
+    }
+    if (this.page == "EndPage") {
+      page = ResultsScreen(retryQuiz: retryQuiz, answers: answers);
     }
     return Container(
       decoration: const BoxDecoration(

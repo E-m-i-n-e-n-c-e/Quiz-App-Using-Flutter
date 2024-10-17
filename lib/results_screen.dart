@@ -1,33 +1,42 @@
 import 'package:flutter/material.dart';
-
+import 'package:quiz_app/data/ques_list.dart';
 import 'package:quiz_app/styled_text.dart';
-// import 'package:quiz_app/quizapp.dart';
 
-class FrontPage extends StatelessWidget {
-  const FrontPage({this.startQuiz, super.key});
+class ResultsScreen extends StatelessWidget {
+  const ResultsScreen(
+      {super.key, required this.retryQuiz, required this.answers});
 
-  final void Function()? startQuiz;
+  final void Function() retryQuiz;
+  final List<String> answers;
+  int computeScore() {
+    int score = 0;
+    for (int i = 0; i < answers.length; i++) {
+      if (answers[i] == questions[i].getCorrectOption()) {
+        score++;
+      }
+    }
+    return score;
+  }
 
   @override
   Widget build(context) {
+    var score = computeScore();
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset(
-            'assets/images/quiz-logo.png',
-            width: 220,
-            height: 220,
-            color: const Color.fromARGB(200, 255, 255, 255),
-          ),
-          const SizedBox(height: 30),
           const StyledText(
-            'Learn Flutter The Fun Way',
-            transparency: 200,
+            'Quiz Completed',
+            fontSize: 25,
+          ),
+          const SizedBox(height: 20),
+          StyledText(
+            'Your Score: $score/${questions.length}',
+            fontSize: 20,
           ),
           const SizedBox(height: 20),
           OutlinedButton.icon(
-            onPressed: startQuiz,
+            onPressed: retryQuiz,
             style: OutlinedButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(0),
@@ -38,11 +47,11 @@ class FrontPage extends StatelessWidget {
               ),
             ),
             icon: const Icon(
-              Icons.arrow_right_alt,
+              Icons.refresh,
               color: Colors.white,
             ),
             label: const Text(
-              'Start Quiz',
+              'Retry Quiz',
               style: TextStyle(
                 fontSize: 15,
                 color: Colors.white,

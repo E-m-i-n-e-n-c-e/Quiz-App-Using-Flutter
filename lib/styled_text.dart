@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class StyledText extends StatelessWidget {
-  const StyledText(this.text, {super.key});
+  const StyledText(
+    this.text, {
+    super.key,
+    this.transparency = 230,
+    this.fontSize = 25,
+  });
+  final int transparency;
   final String text;
+  final double fontSize;
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: const TextStyle(
-        fontSize: 25,
+      textAlign: TextAlign.center,
+      style: GoogleFonts.lato(
+        fontSize: fontSize,
         fontWeight: FontWeight.bold,
-        color: Color.fromARGB(200, 255, 255, 255),
+        color: Color.fromARGB(transparency, 255, 255, 255),
       ),
     );
   }
